@@ -181,6 +181,7 @@ html_theme_options = {
   "logo_link": "index",
   "github_url": "https://github.com/scipy/scipy",
 }
+html_context = {}
 
 if 'versionwarning' in tags:
     # Specific to docs.scipy.org deployment.
@@ -189,9 +190,7 @@ if 'versionwarning' in tags:
            'script.type = "text/javascript";\n'
            'script.src = "/doc/_static/versionwarning.js";\n'
            'document.head.appendChild(script);');
-    html_context = {
-        'VERSIONCHECK_JS': src
-    }
+    html_context['VERSIONCHECK_JS'] = src
     html_js_files = ['versioncheck.js']
 
 html_title = "%s v%s Manual" % (project, version)
@@ -202,10 +201,14 @@ html_css_files = [
     "scipy.css",
 ]
 
-# html_additional_pages = {
-#     'index': 'indexcontent.html',
-# }
-html_additional_pages = {}
+moved_tutorial_pages = [
+    "index", "general", "special", "integrate", "optimize", "interpolate", "fft",
+    "signal", "linalg", "arpack", "csgraph", "spatial", "stats", "ndimage", "io"]
+html_additional_pages = {
+    f"reference/tutorial/{page}": 'redirects.html' for page in moved_tutorial_pages
+}
+html_context["redirects"] = {f"reference/tutorial/{page}": f"tutorial/{page}"
+                             for page in moved_tutorial_pages}
 html_use_modindex = True
 html_domain_indices = False
 html_copy_source = False
